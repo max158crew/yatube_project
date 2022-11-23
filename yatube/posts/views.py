@@ -3,23 +3,13 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post, Group
 
 def index(request):
-    # Одна строка вместо тысячи слов на SQL:
-    # в переменную posts будет сохранена выборка из 10 объектов модели Post,
-    # отсортированных по полю pub_date по убыванию (от больших значений к меньшим)
     posts = Post.objects.order_by('-pub_date')[:10]
-    # В словаре context отправляем информацию в шаблон
+    title = 'Последние обновления на сайте'
     context = {
         'posts': posts,
+        'title': title,
     }
     return render(request, 'posts/index.html', context)
-
-# def index(request):
-#     template = 'posts/index.html'
-#     title = 'Это главная страница проекта Yatube'
-#     context = {
-#         'title': title,
-#     }
-#     return render(request, template, context)
 
 def group_posts(request, slug):
     # Функция get_object_or_404 получает по заданным критериям объект
@@ -35,6 +25,7 @@ def group_posts(request, slug):
     context = {
         'group': group,
         'posts': posts,
+        'title': slug,
     }
     return render(request, 'posts/group_list.html', context)
 
